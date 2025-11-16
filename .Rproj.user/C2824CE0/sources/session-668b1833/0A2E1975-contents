@@ -1,0 +1,25 @@
+## sum( ( log(y) - log(y_hat) )^2 )
+# Simple Multiplicative Fixed Point
+lsq <- function(y, x, tol = 1e-8, maxit = 10000, alpha = 0.01) {
+  p <- dim(x)[2]
+  be <- rep(1/p, p)  # Work directly with b
+  tx <- t(x)
+  ly <- log(y)
+
+  for (iter in 1:maxit) {
+    y_hat <- drop(x %*% be)
+    grad <-  -2 * tx %*% ( ( ly - log(y_hat) ) / y_hat )
+    grad_centered <- grad - mean(grad)
+    be_new <- be * exp(-alpha * grad_centered)
+    be_new <- be_new / sum(be_new)
+    if ( max( abs(be_new - be) ) < tol ) {
+      be <- be_new
+      break
+    }
+    be <- be_new
+  }
+
+  y_hat_final <- x %*% be
+  obj <- sum( ( ly - log(y_hat_final) )^2 )
+  list(coefficients = round(be, 12), value = obj, iterations = iter)
+}

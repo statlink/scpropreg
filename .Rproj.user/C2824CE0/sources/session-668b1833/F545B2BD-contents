@@ -1,0 +1,39 @@
+\name{propconreg-package}
+\alias{propconreg-package}
+\docType{package}
+\title{
+Constrained Ordinary Least Squares
+}
+
+\description{
+Constrained ordinary least squares is performed. One constraint is that all beta coefficients
+(including the constant) cannot be negative. They can be either 0 or strictly positive.
+Another constraint is that the sum of the beta coefficients equals a constant.
+}
+
+\details{
+\tabular{ll}{
+Package: \tab propconreg\cr
+Type: \tab Package\cr
+Version: \tab 1.0 \cr
+Date: \tab 2025-11-14 \cr
+}
+}
+
+\author{
+Michail Tsagris \email{mtsagris@uoc.gr}
+}
+
+\section{Maintainers}{
+Michail Tsagris <mtsagris@uoc.gr>.
+}
+
+\references{
+Iverson Sara J., Field Chris, Bowen W. Don and Blanchard Wade (2004) Quantitative Fatty Acid
+Signature Analysis: A New Method of Estimating Predator Diets. Ecological Monographs, 74(2): 211-235.
+}
+
+
+
+
+

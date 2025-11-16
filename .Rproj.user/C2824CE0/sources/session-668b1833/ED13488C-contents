@@ -1,0 +1,43 @@
+mkld <- function(Y, x, tol = 1e-8, maxit = 10000, alpha = 0.1) {
+  eps <- 1e-10
+  p <- dim(x)[2]
+  tx <- t(x)
+
+  d <- dim(y)[2]
+  B <- matrix(0, p, d)
+  obj <- iterations <- numeric(d)
+
+  for ( j in 1:d ) {
+    y <- Y[, j]
+    be <- rep(1/p, p)
+
+    for ( iter in 1:maxit ) {
+      y_hat <- pmax(x %*% be, eps)
+      grad <- tx %*% (log(y_hat/y) + 1 - y/y_hat)
+      be_new <- be * exp(-alpha * grad)
+      be_new <- be_new / sum(be_new)
+      y_hat_new <- pmax(x %*% be_new, eps)
+      obj_new <- sum( (y - y_hat_new) * log(y / y_hat_new) )
+      obj_old <- sum( (y - y_hat) * log(y / y_hat) )
+      # If not improving, reduce step size
+      if ( obj_new > obj_old ) {
+        alpha <- alpha * 0.5
+        next
+      }
+      # Check convergence
+      if ( max(abs(be_new - be) ) < tol) {
+        be <- be_new
+        break
+      }
+      be <- be_new
+      alpha <- min(alpha * 1.05, 0.5)  # Slowly increase step size
+    }
+
+    y_hat <- pmax(x %*% be, eps)
+    obj[j] <- sum( (y - y_hat) * log(y / y_hat) )
+    B[, j] <- round(be, 12)
+    iterations[j] <- iter
+  }
+
+  list( coefficients = round(B, 12), value = obj, iterations = iterations )
+}

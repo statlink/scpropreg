@@ -1,0 +1,77 @@
+\name{QFASA diet estimates for many predators using various distances}
+\alias{mkld}
+\title{
+QFASA diet estimates for many predators using various distances
+}
+
+\description{
+QFASA diet estimates for many predators using various distances.
+}
+
+\usage{
+mkld(Y, x, tol = 1e-8, maxit = 10000, alpha = 0.1)
+}
+
+\arguments{
+\item{Y}{
+The response variable, a matrix with values between 0 and 1 that sum to 1. For some functions, zero values are allowed. Every column corresponds to the food composition of a predator. The column-wise sums are equal to 1.
+}
+\item{x}{
+A matrix with independent variables, values between 0 and 1. Each column contains a prey's diet. The column-wise sums are equal to 1.
+}
+\item{tol}{
+The tolerance value to terminate the algorithm.
+}
+\item{maxit}{
+The maximum iterations allowed.
+}
+\item{alpha}{
+The step-size parameter of the fixed points iteration algorithm. This is similar to the \eqn{\eta} parameter in the gradient descent algorithm.
+}
+}
+
+\details{
+The function estimates the betas that minimize a distance. The fitted values are linear constraints of the observed xs. The constraint is that all beta coefficients are positive and sum to 1. That is
+\eqn{\hat{y}_i= \sum_{j=1}\bm{x}_{ij}\beta_j} such that \eqn{0\leq \beta_j \leq 1} and \eqn{\sum_{j=1}^d\beta_j=1}.
+}
+
+\value{
+A list including:
+\item{coefficients}{
+A numerical matrix with the positively constrained beta coefficients.
+}
+\item{value}{
+A numerical vector with the value of the objective function.
+}
+\item{iters}{
+The number of iterations required until termination of the algorithm.
+}
+}
+
+\references{
+Iverson Sara J., Field Chris, Bowen W. Don and Blanchard Wade (2004) Quantitative Fatty Acid
+Signature Analysis: A New Method of Estimating Predator Diets. Ecological Monographs, 74(2): 211-235.
+}
+
+\author{
+Michail Tsagris.
+
+R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
+}
+
+%\note{
+%%  ~~further notes~~
+%}
+
+\seealso{
+\code{\link{mpcls}
+}
+}
+
+\examples{
+x <- matrix(runif(30 * 6), ncol = 30)
+x <- t( x / rowSums(x) )
+Y <- matrix(runif(30 * 10), ncol = 30)
+Y <- t( Y / rowSums(Y) )
+mkld(Y, x)
+}
