@@ -1,3 +1,4 @@
+## sum( ( y - y_hat )^2 )
 pcls <- function(y, x) {
 
   dm <- dim(x)

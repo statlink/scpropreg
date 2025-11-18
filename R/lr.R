@@ -1,4 +1,5 @@
 ## irls logistic regression with identity link
+## sum( y * log(y / y_hat) )
 lr <- function(y, x, tol = 1e-8, maxit = 100) {
   p <- dim(x)[2]
   be <- rep(1/p, p)
