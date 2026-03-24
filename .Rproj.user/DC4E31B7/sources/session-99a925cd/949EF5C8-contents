@@ -1,0 +1,33 @@
+# sum( ( clr(y) - clr(y_hat) )^2 )
+# Fixed Point Iteration for Aitchison Distance
+ait <- function(y, x, tol = 1e-8, maxit = 50000, alpha = 0.01) {
+  p <- dim(x)[2]
+  be <- rep(1/p, p)  # Initialize on simplex
+  clr <- function(z) {
+    lz <- log(z)
+    lz - mean(lz)
+  }
+
+  tx <- t(x)
+  cly <- log(y)
+  cly <- cly - mean(cly)
+
+  for ( iter in 1:maxit ) {
+    y_hat <- drop(x %*% be)
+    res <- cly - clr(y_hat)
+    grad <- -2 * tx %*% (res / y_hat)
+    # Fixed point update: b = b * exp(-alpha * centered_gradient)
+    grad_centered <- grad - mean(grad)
+    be_new <- be * exp(-alpha * grad_centered)
+    be_new <- be_new / sum(be_new)
+    if ( max(abs(be_new - be) ) < tol) {
+      break
+    }
+    be <- be_new
+  }
+
+  y_hat_final <- x %*% be
+  obj <- sum( ( cly - clr(y_hat_final) )^2 )
+  list(coefficients = round(be, 12), value = obj, iterations = iter)
+}
+
