@@ -1,9 +1,0 @@
-#useDynLib(pchc, .registration = TRUE)
-
-importFrom("nnsolve", fnnls, fnnls_regs)
-importFrom("Rfast", colsums, colmeans)
-importFrom("Rfast2", cls)
-
-exportPattern("^[[:alpha:]]+")
-exportPattern("^[^\\.]")
-

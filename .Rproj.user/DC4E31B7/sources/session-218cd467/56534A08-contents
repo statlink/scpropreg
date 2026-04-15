@@ -1,5 +1,0 @@
-mpcls2 <- function(y, x) {
-  mod <- nnsolve::fnnls_regs(Y, x, sum_to_constant = TRUE)
-  names(mod)[[ 1 ]] <- "be"
-  mod
-}
